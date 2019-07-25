@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Pawn : Figure
 {
-    public override bool move(int destX, int destZ, Vector3 destination, Figure a, Figure[,] gameState)
+    public override bool MoveFigure(int destX, int destZ, Vector3 destination, Figure a, Figure[,] gameState)
     {
         int currentX = Mathf.FloorToInt(this.transform.position.x);
         int currentZ = Mathf.FloorToInt(this.transform.position.z);
@@ -13,7 +13,7 @@ public class Pawn : Figure
         if ((currentX + 1 == destX || currentX - 1 == destX) && currentZ + step == destZ && a != null && a.isWhite != this.isWhite)
         {
             Debug.Log("jedem");
-            this.Eat(a, gameState);
+            this.EatFigure(a, gameState);
             this.transform.position = destination;
             gameState[destX, destZ] = this;
             gameState[currentX, currentZ] = null;

@@ -87,19 +87,8 @@ public class BoardManager : MonoBehaviour
                 {
                     CreateFigure(11, i, j);
                 }
-
-                //if (j == 0 || j == 1 || j == 6 || j == 7)
-                //{
-                //    Instantiate(figure, new Vector3(i, 0.5f, j), Quaternion.identity, gameFigures);
-                //    gameState[i,j] = gameFigures.GetChild(gameFigures.transform.childCount - 1).gameObject;
-                //debug.log(gamestate[i, j]);
-                //debug.log(i);
-                //debug.log(j);
-
-                //}
             }
         }
-        //Debug.Log(gameState);
         //PrintGameState();
     }
 
@@ -117,12 +106,8 @@ public class BoardManager : MonoBehaviour
             {
                 MoveFigure();
             }
-
+            //IsChess(gameState);
             Debug.Log(selectedFigure);
-
-            //int positionX = Mathf.FloorToInt(hit.transform.position.x);
-            //int positionZ = Mathf.FloorToInt(hit.transform.position.z);
-            //Debug.Log(gameState[positionX, positionZ]);
         }
 
     }
@@ -170,7 +155,7 @@ public class BoardManager : MonoBehaviour
         int newX = Mathf.FloorToInt(hit.transform.position.x);
         int newZ = Mathf.FloorToInt(hit.transform.position.z);
 
-        if (selectedFigure.move(newX, newZ, hit.transform.position, hit.collider.gameObject.GetComponent<Figure>(), gameState)) {
+        if (selectedFigure.MoveFigure(newX, newZ, hit.transform.position, hit.collider.gameObject.GetComponent<Figure>(), gameState)) {
             isWhiteTurn = !isWhiteTurn;
             //selectedFigure.transform.position = hit.transform.position;
         }
@@ -179,12 +164,58 @@ public class BoardManager : MonoBehaviour
             Debug.Log("illegal move");
         }
         selectedFigure = null;
-
-
-
-        // gameState[newX, newZ] = selectedFigure;
-
-        //PrintGameState();
-
     }
+
+    //bool IsChess(Figure[,] state)
+    //{
+
+    //    // za state proverim da li u tom stejtu neko napada kralja
+
+    //    for (int i = 0; i < 8; i++)
+    //    {
+    //        for (int j = 0; j < 8; j++)
+    //        {
+    //           if (state[i, j] != null)
+    //            {
+    //                // za state[i,j] izracunamo da li napada kralja
+    //                foreach (var move in state[i, j].getPossibleMoves() )
+    //                {
+    //                    // move treba da je [x,y]
+    //                    if (isEnemyKing(state[x,y], state[i, j]))
+    //                    {
+    //                        return [x, y];
+    //                    }
+    //                }
+
+    //            }
+
+    //        }
+    //    }
+    //    return false;
+    //}
+
+    //bool IsEnemyKing(Figure potentialKing, Figure attacker)
+    //{
+    //    if (potentialKing != null && attacker != null)
+    //    {
+    //        if (potentialKing.GetType() == typeof(King) && attacker.isWhite != potentialKing.isWhite)
+    //        {
+    //            return true;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        return false;
+    //    }
+    //}
+
+    //bool IsMate(Figure[,] state)
+    //{
+    //    // uzmi svaku figuru
+    //    // probaj svaji possibleMove, za svaki napravi futureState
+    //    // setuj isMate na false ako isChess(futureState) == false
+    //    // u suprotnom return true
+    //    return true;
+    //}
+
 }

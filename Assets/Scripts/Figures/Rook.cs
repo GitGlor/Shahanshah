@@ -4,257 +4,123 @@ using UnityEngine;
 
 public class Rook : Figure
 {
-    bool[,] possibleMoves = new bool[8, 8];
-    
-    public override bool move(int destX, int destZ, Vector3 destination, Figure a, Figure[,] gameState)
+    public override bool MoveFigure(int destX, int destZ, Vector3 destination, Figure a, Figure[,] gameState)
     {
+        bool[,] possibleMoves = new bool[8, 8];
         int currentX = Mathf.FloorToInt(this.transform.position.x);
         int currentZ = Mathf.FloorToInt(this.transform.position.z);
 
-        //int i;
+        int i;
+        Figure f;
 
-        ////desno
-        //i = currentX;
-        //while (true)
-        //{
-        //    i++;
-        //    if (i >= 8)
-        //    {
-        //        break;
-        //    }
-
-        //    if (i == destX && a == null)
-        //    {
-        //        possibleMoves[destX, currentZ] = true;
-        //    }
-        //    else
-        //    {
-        //        if (a != null && a.isWhite != this.isWhite)
-        //        {
-        //            possibleMoves[destX, currentZ] = true;
-        //        }
-        //        else
-        //        {
-        //            break;
-        //        }
-        //    }
-        //}
-
-        ////levo
-        //i = currentX;
-        //while (true)
-        //{
-        //    i--;
-        //    if (i < 0)
-        //    {
-        //        break;
-        //    }
-
-        //    if (i == destX && a == null)
-        //    {
-        //        possibleMoves[destX, currentZ] = true;
-        //    }
-        //    else
-        //    {
-        //        if (a != null && a.isWhite != this.isWhite)
-        //        {
-        //            possibleMoves[destX, currentZ] = true;
-        //        }
-        //        else
-        //        {
-        //            break;
-        //        }
-        //    }
-        //}
-
-        ////napred
-        //i = currentZ;
-        //while (true)
-        //{
-        //    i++;
-        //    if (i >= 8)
-        //    {
-        //        break;
-        //    }
-
-        //    if (i == destZ && a == null)
-        //    {
-        //        possibleMoves[currentX, destZ] = true;
-        //    }
-        //    else
-        //    {
-        //        if (a != null && a.isWhite != this.isWhite)
-        //        {
-        //            possibleMoves[currentX, destZ] = true;
-        //        }
-        //        else
-        //        {
-        //            break;
-        //        }
-        //    }
-        //}
-
-        ////nazad
-        //i = currentZ;
-        //while (true)
-        //{
-        //    i++;
-        //    if (i < 0)
-        //    {
-        //        break;
-        //    }
-
-        //    if (i == destZ && a == null)
-        //    {
-        //        possibleMoves[currentX, destZ] = true;
-        //    }
-        //    else
-        //    {
-        //        if (a != null && a.isWhite != this.isWhite)
-        //        {
-        //            possibleMoves[currentX, destZ] = true;
-        //        }
-        //        else
-        //        {
-        //            break;
-        //        }
-        //    }
-        //}
-        
         //desno
-        for (int i = 1; i < 8; i++)
+        i = currentX;
+        while (true)
         {
-            if (currentX + i >= 8)
+            i++;
+            if (i >= 8)
             {
                 break;
             }
 
-            if (currentX + i == destX && a == null)
+            f = gameState[i, currentZ];
+            if (f == null)
             {
-                possibleMoves[destX, currentZ] = true;
-                Debug.Log(possibleMoves[destX, currentZ]);
+                possibleMoves[i, currentZ] = true;
             }
             else
             {
-                if (a != null && this.isWhite != a.isWhite)
+                if (f != null && f.isWhite != this.isWhite)
                 {
-                    possibleMoves[destX, currentZ] = true;
-                    Debug.Log(possibleMoves[destX, currentZ]);
+                    possibleMoves[i, currentZ] = true;
                 }
-                else
-                {
-                    break;
-                }
-            }
-        }
-
-        //napred
-        for (int i = 1; i < 8; i++)
-        {
-            if (currentZ + i < 0)
-            {
                 break;
-            }
-
-            if (currentZ + i == destZ && a == null)
-            {
-                possibleMoves[currentX, destZ] = true;
-                Debug.Log(possibleMoves[currentX, destZ]);
-            }
-            else
-            {
-                if (a != null && this.isWhite != a.isWhite)
-                {
-                    possibleMoves[currentX, destZ] = true;
-                    Debug.Log(possibleMoves[currentX, destZ]);
-                }
-                else
-                {
-                    break;
-                }
             }
         }
 
         //levo
-        for (int i = 1; i < 8; i++)
+        i = currentX;
+        while (true)
         {
-            if (currentX - i < 0)
+            i--;
+            if (i < 0)
             {
                 break;
             }
 
-            if (currentX - i == destX && a == null)
+            f = gameState[i, currentZ];
+            if (f == null)
             {
-                possibleMoves[destX, currentZ] = true;
-                Debug.Log(possibleMoves[destX, currentZ]);
+                possibleMoves[i, currentZ] = true;
             }
             else
             {
-                if (a != null && this.isWhite == a.isWhite)
+                if (f != null && f.isWhite != this.isWhite)
                 {
-                    possibleMoves[destX, currentZ] = true;
-                    Debug.Log(possibleMoves[destX, currentZ]);
+                    possibleMoves[i, currentZ] = true;
                 }
-                else
+                break;
+            }
+        }
+
+        //napred
+        i = currentZ;
+        while (true)
+        {
+            i++;
+            if (i >= 8)
+            {
+                break;
+            }
+
+            f = gameState[currentX, i];
+            if (f == null)
+            {
+                possibleMoves[currentX, i] = true;
+            }
+            else
+            {
+                if (f != null && f.isWhite != this.isWhite)
                 {
-                    break;
+                    possibleMoves[currentX, i] = true;
                 }
+                break;
             }
         }
 
         //nazad
-        for (int i = 1; i < 8; i++)
+        i = currentZ;
+        while (true)
         {
-            if (currentZ - 1 < 0)
+            i--;
+            if (i < 0)
             {
                 break;
             }
 
-            if (currentZ - 1 == destZ && a == null)
+            f = gameState[currentX, i];
+            if (f == null)
             {
-                possibleMoves[currentX, destZ] = true;
-                Debug.Log(possibleMoves[currentX, destZ]);
+                possibleMoves[currentX, i] = true;
             }
             else
             {
-                if (a != null && this.isWhite == a.isWhite)
+                if (f != null && f.isWhite != this.isWhite)
                 {
-                    possibleMoves[currentX, destZ] = true;
-                    Debug.Log(possibleMoves[currentX, destZ]);
+                    possibleMoves[currentX, i] = true;
                 }
-                else
-                {
-                    break;
-                }
+                break;
             }
         }
 
-        //for (int k = 1; k < 8; k++)
-        //{
-        //    if (currentX + k == destX && a == null)
-        //    {
-        //        possibleMoves[destX, currentZ] = true;
-        //        Debug.Log("desno");
-        //    }
-        //    else if (currentX - k == destX && a == null)
-        //    {
-        //        possibleMoves[destX, currentZ] = true;
-        //        Debug.Log("levo");
-        //    }
-        //    else if (currentZ + k == destZ && a == null)
-        //    {
-        //        possibleMoves[currentX, destZ] = true;
-        //        Debug.Log("napred");
-        //    }
-        //    else if (currentZ - k == destZ && a == null)
-        //    {
-        //        possibleMoves[currentX, destZ] = true;
-        //        Debug.Log("nazad");
-        //    }
-        //}
-
-
-        if (possibleMoves[destX, destZ])
+        if (possibleMoves[destX, destZ] && a != null && this.isWhite != a.isWhite)
+        {
+            this.EatFigure(gameState[destX, destZ], gameState);
+            this.transform.position = destination;
+            gameState[destX, destZ] = this;
+            gameState[currentX, currentZ] = null;
+        }
+        else if (possibleMoves[destX, destZ])
         {
             this.transform.position = destination;
             gameState[destX, destZ] = this;
@@ -263,4 +129,6 @@ public class Rook : Figure
 
         return true;
     }
+
+
 }
