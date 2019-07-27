@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bishop : Figure
 {
-    public override bool MoveFigure(int destX, int destZ, Vector3 destination, Figure a, Figure[,] gameState)
+    public override bool[,] PossibleMoves(Figure[,] gameState)
     {
         bool[,] possibleMoves = new bool[8, 8];
 
@@ -122,6 +122,15 @@ public class Bishop : Figure
                 break;
             }
         }
+
+
+        return possibleMoves;
+    }
+
+    public override bool MoveFigure(int destX, int destZ, Vector3 destination, Figure a, Figure[,] gameState, bool[,] possibleMoves)
+    {
+        int currentX = Mathf.FloorToInt(this.transform.position.x);
+        int currentZ = Mathf.FloorToInt(this.transform.position.z);
 
         if (possibleMoves[destX, destZ] && a != null && this.isWhite != a.isWhite)
         {

@@ -6,18 +6,18 @@ public abstract class Figure : MonoBehaviour
 {
     public bool isWhite;
 
-    public virtual bool[,] PossibleMoves(int i, int j, Vector3 destination, Figure a,  Figure[,] gameState)
+    public virtual bool[,] PossibleMoves(Figure[,] gameState)
     {
-  
-        return new bool[8,8];
+
+        return new bool[8, 8];
     }
 
-    public virtual bool MoveFigure(int i, int j, Vector3 destination, Figure a, Figure[,] gameState)
+    public virtual bool MoveFigure(int i, int j, Vector3 destination, Figure a, Figure[,] gameState, bool[,] possibleMoves)
     {
         return true;
     }
 
-    public virtual bool EatFigure( Figure prey,  Figure[,] gameState)
+    public virtual bool EatFigure(Figure prey, Figure[,] gameState)
     {
         if (prey != null)
         {
