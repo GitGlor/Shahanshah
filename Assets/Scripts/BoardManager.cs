@@ -109,7 +109,11 @@ public class BoardManager : MonoBehaviour
             {
                 MoveFigure();
                 IsChess(gameState);
-                //IsCheckmate(gameState);
+                IsCheckmate(gameState);
+                //if (IsChess(gameState))
+                //{
+                //    IsCheckmate(gameState);
+                //}
             }
             //IsChess(gameState);
             //IsCheckmate(gameState);
@@ -200,7 +204,8 @@ public class BoardManager : MonoBehaviour
 
     bool IsChess(Figure[,] state)
     {
-
+        bool isChess = false;
+        int counter = 0;
         // za state proverim da li u tom stejtu neko napada kralja
 
         for (int i = 0; i < 8; i++)
@@ -209,25 +214,19 @@ public class BoardManager : MonoBehaviour
             {
                 if (state[i, j] != null)
                 {
+                    //Debug.Log(state[i, j]);
                     for (int k = 0; k < 8; k++)
                     {
                         for (int l = 0; l < 8; l++)
                         {
                             bool[,] r = new bool[8, 8];
                             r = state[i, j].PossibleMoves(gameState);
-                            
-                            if (r[k,l] == true)
+                            //Debug.Log(r);
+                            if (r[k, l] == true)
                             {
-                                //if (IsEnemyKing(gameState[k, l], state[i, j]))
-                                //{
-                                //    //Debug.Log("sah JE MAJMUNE");
-                                //}
-
                                 if (gameState[k, l] != null && gameState[k, l].GetType() == typeof(King) && gameState[k, l].isWhite != state[i, j].isWhite)
                                 {
-                                    Debug.Log("sah");
-                                    return true;
-
+                                    counter++;
                                 }
                             }
                             //gameState[i, j].possibleMoves[k, l];
@@ -248,12 +247,15 @@ public class BoardManager : MonoBehaviour
                     //}
 
                 }
-
             }
         }
-        return false;
+        if (counter >= 1)
+        {
+            isChess = true;
+        }
+        Debug.Log("||isChess: " + isChess + "||");
+        return isChess;
     }
-
 
     bool IsCheckmate(Figure[,] state)
     {
@@ -261,13 +263,24 @@ public class BoardManager : MonoBehaviour
         bool isCheckmate = true;
         bool[,] r = new bool[8, 8];
 
+        int counter = 0;
 
         Figure[,] futureState = new Figure[8, 8];
+
         for (int i = 0; i < 8; i++)
         {
             for (int j = 0; j < 8; j++)
             {
-                if (state[i,j] != null)
+                futureState[i, j] = gameState[i, j];
+            }
+        }
+
+
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                if (state[i, j] != null)
                 {
                     r = state[i, j].PossibleMoves(gameState);
                     //Debug.Log("svi moguci potezi figure");
@@ -277,24 +290,22 @@ public class BoardManager : MonoBehaviour
                         {
                             if (r[k, l] == true)
                             {
-                                //Debug.Log("prva moguca pozicija figure");
-                                futureState = gameState;
                                 //Debug.Log(futureState[i, j]);
                                 //Debug.Log(futureState[k, l]);
                                 //Debug.Log(gameState);
-                                futureState[k, l] = state[i, j];
+                                futureState[k, l] = null;
+                                futureState[k, l] = gameState[i, j];
                                 futureState[i, j] = null;
                                 //Debug.Log(futureState[i, j]);
                                 //Debug.Log(futureState[k, l]);
 
                                 if (IsChess(futureState) == false)
                                 {
-                                    Debug.Log("trebalo bi da NIJE sah mat");
-                                    isCheckmate = false;
+                                    counter++;
                                 }
                                 else
                                 {
-                                    Debug.Log("mozda JESTE sah mat");
+                                    //Debug.Log("mozda JESTE sah mat");
                                     //isCheckmate = true;
                                     //isCheckmate = true;
                                     //Debug.Log("sah mat");
@@ -304,19 +315,112 @@ public class BoardManager : MonoBehaviour
                     }
                 }
 
-                
 
-                
+
+
             }
         }
         // uzmi svaku figuru
         // probaj svaji possibleMove, za svaki napravi futureState
         // setuj isMate na false ako isChess(futureState) == false
         // u suprotnom return true
+
+        Debug.Log(counter);
+
+        //if (counter >= 1)
+        //{
+        //    isCheckmate = false;
+        //}
+
         Debug.Log("trenutak whatever");
         Debug.Log(isCheckmate);
         return isCheckmate;
     }
+
+
+    //bool IsCheckmate(Figure[,] state)
+    //{
+    //    //Debug.Log("usao");
+    //    bool isCheckmate = false;
+    //    bool[,] r1 = new bool[8, 8];
+    //    bool[,] r2 = new bool[8, 8];
+    //    int counter = 0;
+
+
+    //    Figure[,] futureState = new Figure[8, 8];
+    //    for (int i = 0; i < 8; i++)
+    //    {
+    //        for (int j = 0; j < 8; j++)
+    //        {
+    //            futureState[i, j] = gameState[i, j];
+    //        }
+    //    }
+
+    //    for (int i = 0; i < 8; i++)
+    //    {
+    //        for (int j = 0; j < 8; j++)
+    //        {
+    //            if (gameState[i, j] != null)
+    //            {
+    //                //Debug.Log(state[i, j]);
+    //                for (int k = 0; k < 8; k++)
+    //                {
+    //                    for (int l = 0; l < 8; l++)
+    //                    {
+    //                        r1 = gameState[i, j].PossibleMoves(gameState);
+    //                        //Debug.Log(r1);
+    //                        if (r1[k, l] == true)
+    //                        {
+    //                            futureState[k, l] = gameState[i, j];
+    //                            futureState[i, j] = null;
+
+    //                            for (int m = 0; m < 8; m++)
+    //                            {
+    //                                for (int n = 0; n < 8; n++)
+    //                                {
+    //                                    if (futureState[m, n] != null)
+    //                                    {
+    //                                        r2 = futureState[m, n].PossibleMoves(state);
+    //                                        for (int o = 0; o < 8; o++)
+    //                                        {
+    //                                            for (int p = 0; p < 8; p++)
+    //                                            {
+    //                                                if (r2[o, p] == true)
+    //                                                {
+    //                                                    if (gameState[o, p] != null && gameState[o, p].GetType() == typeof(King) && gameState[o,p].isWhite != futureState[m,n].isWhite)
+    //                                                    {
+    //                                                        counter++;
+    //                                                    }
+    //                                                    else
+    //                                                    {
+
+
+    //                                                    }
+    //                                                }
+    //                                            }
+    //                                        }
+    //                                    }
+    //                                }
+    //                            }
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+    //    // uzmi svaku figuru
+    //    // probaj svaji possibleMove, za svaki napravi futureState
+    //    // setuj isMate na false ako isChess(futureState) == false
+    //    // u suprotnom return true
+    //    Debug.Log(counter);
+    //    //if (counter == 0)
+    //    //{
+    //    //    isCheckmate = true;
+    //    //}
+
+    //    Debug.Log("||isCheckmate: " + isCheckmate + "||");
+    //    return isCheckmate;
+    //}
 
 
     bool IsEnemyKing(Figure potentialKing, Figure attacker)
